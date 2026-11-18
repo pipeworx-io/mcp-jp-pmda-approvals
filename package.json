@@ -1,0 +1,33 @@
+{
+  "name": "@pipeworx/mcp-jp-pmda-approvals",
+  "version": "0.1.0",
+  "description": "jp-pmda-approvals -- Japan's new-drug approvals as the Pharmaceuticals and Medical Devices Agency (PMDA, 医薬品医療機器総合機構) publishes them.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./tools.json": "./tools.json",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "mcp-jp-pmda-approvals": "bin/cli.js"
+  },
+  "files": ["bin/", "lib/", "tools.json", "server.json"],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "jp-pmda-approvals"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pipeworx-io/mcp-jp-pmda-approvals.git"
+  },
+  "mcpName": "io.github.pipeworx-io/jp-pmda-approvals",
+  "pipeworx": {
+    "mode": "gateway",
+    "slug": "jp-pmda-approvals",
+    "gatewaySlug": "jp-pmda-approvals",
+    "sourceHash": "v1-15562f29879049af32fe45cd3b83606e88544c52e0b938291f326f3f7172f874",
+    "sourceCommit": "63eb9b1fe9f3b095b65c4d9ab981248c93e13326"
+  }
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "name": "jp_pmda_approvals_search",
+    "description": "Search Japan's approved new prescription drugs as the Pharmaceuticals and Medical Devices Agency (PMDA, 医薬品医療機器総合機構) lists them by fiscal year (April to March): every new-drug approval and partial-change approval (new indication, dosage or dosage form) with the brand name and presentations, applicant company and 13-digit corporate number, approval date, approval type (承認 new product or 一変 partial change), review field, Japanese active-ingredient name, the indication line, and flags such as orphan drug (希少疾病用医薬品). Fiscal years 2018 onward are readable; the current year is partial. The list is Japanese: search with the katakana brand name (キイトルーダ), the Japanese ingredient (ペムブロリズマブ), a company (武田薬品) or indication words (多発性骨髄腫); words are ANDed, hiragana/katakana and full/half width are folded. An English query only matches Latin text in the rows, so for English brand and ingredient names use jp_pmda_review_reports_search. year is a fiscal year such as 2025, recent (default, latest three) or all; every answer states the fiscal years searched, and a zero-match answer says which. Example: query=\"キイトルーダ\", year=\"all\".",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Japanese (or Latin) words: brand, ingredient, company or indication. Optional when `year` is a fiscal year to list."
+        },
+        "year": {
+          "type": "string",
+          "description": "Fiscal year (April to March) such as \"2025\", \"recent\" (default, the latest three fiscal years) or \"all\" (2018 onward)."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Maximum approvals returned (1-50, default 10); total_matches always gives the full count."
+        }
+      }
+    }
+  },
+  {
+    "name": "jp_pmda_review_reports_search",
+    "description": "Search the PMDA's English index of review reports for drugs approved in Japan with a new active ingredient: by English brand name or non-proprietary name (e.g. Keytruda, pembrolizumab). Each entry gives the brand name, whether it was an initial or partial-change approval, the non-proprietary name, the month approved, the link to the English translation of the review report and the links to the Japanese original(s). Only drugs whose review report the agency translated are indexed, so no hit does not mean unapproved in Japan; for the full list of approvals (Japanese) use jp_pmda_approvals_search. Example: query=\"pembrolizumab\".",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "English brand name or non-proprietary name words (all words must match)."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Maximum entries returned (1-50, default 10)."
+        }
+      },
+      "required": [
+        "query"
+      ]
+    }
+  },
+  {
+    "name": "jp_pmda_safety_search",
+    "description": "Search Japan's notices that revise the precautions for use of a drug (使用上の注意の改訂指示通知) as the Pharmaceuticals and Medical Devices Agency (PMDA) lists them by fiscal year: for each notice the date, the notice number, the generic ingredients concerned (Japanese names), and links to the revision text and the investigation report. Use it to answer which drugs had their precautions revised, when, and where the text is; the wording of the change is in the linked PDF documents, which are not read here. Search by Japanese generic name (カルバマゼピン, ラモトリギン; hiragana/katakana and full/half width are folded) and/or date_from (ISO date); with neither it lists the latest notices. Default is the three most recent fiscal years (April to March); pass fiscal_year=\"all\" for 2018 onward. Every answer states the fiscal years and the notice dates searched; an unreadable year is reported as unread, never as empty. Example: query=\"カルバマゼピン\".",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Japanese generic (ingredient) name words; all words must match."
+        },
+        "date_from": {
+          "type": "string",
+          "description": "Only notices dated on or after this ISO date (YYYY-MM-DD)."
+        },
+        "fiscal_year": {
+          "type": "string",
+          "description": "A fiscal year such as \"2025\" (April 2025 to March 2026) or \"all\" (2018 onward). Default: the three most recent, or from date_from."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Maximum notices returned (1-50, default 10); total_matches gives the full count."
+        }
+      }
+    }
+  },
+  {
+    "name": "jp_pmda_device_approvals_search",
+    "description": "Search medical devices approved in Japan as the Pharmaceuticals and Medical Devices Agency (PMDA) lists them by fiscal year (April to March) in four lists: new devices (新医療機器), improved devices with clinical data, improved devices without clinical data, and follow-on (generic) devices. Each row gives the brand name, generic device-type name, applicant company (and 13-digit corporate number where listed), approval date, approval type (承認 new product or 一変 partial change), approval number where listed, and for new and clinical-data improved devices the clinical field, a purpose description and the clinical basis and review period. Names are Japanese: search with katakana/Japanese words (ステント, ペースメーカ, a company such as テルモ); full/half width and hiragana/katakana are folded. Default is the two most recent fiscal years across all four lists; year can be a fiscal year (2025) or, with a category, \"all\" (2018 onward). Every answer states the lists and years searched; a year that is not a readable spreadsheet is reported as unread. Example: query=\"ステント\", category=\"improved_no_clinical\".",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Japanese words: brand, device type, company or clinical field; all words must match. Optional when `year` is given."
+        },
+        "year": {
+          "type": "string",
+          "description": "Fiscal year (April to March) such as \"2025\", \"recent\" (default, latest two) or \"all\" (2018 onward; requires `category`)."
+        },
+        "category": {
+          "type": "string",
+          "description": "new, improved_clinical, improved_no_clinical, generic, or all (default)."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Maximum approvals returned (1-50, default 10); total_matches gives the full count."
+        }
+      }
+    }
+  },
+  {
+    "name": "jp_pmda_recalls_search",
+    "description": "Search Japan's recall notices for drugs, quasi-drugs, cosmetics, in-vitro diagnostics, medical devices and regenerative products as the Pharmaceuticals and Medical Devices Agency (PMDA, 医薬品医療機器総合機構) posts them by fiscal year (April to March, from fiscal 2024) and class: class I (use may cause serious harm or death), II (temporary or curable harm) and III (harm unlikely). Each hit gives the recall number, class, product type, generic name, product name, the marketing authorisation holder (the company), the posting date, the agency's remark (such as recall completed or a correction) and the link to the notice; jp_pmda_recall_get returns the lots, quantity, reason as written by the company, the feared health damage and the recall start date. Names are Japanese: search katakana or kanji (日本赤十字社, ステント, 血漿); full/half width and hiragana/katakana are folded; words are ANDed. Default is the current fiscal year; year can be 2025, \"recent\" or \"all\" (from 2024). Every answer states the lists read and the posting dates covered, and a list that cannot be read is reported as unread, never as empty. Example: query=\"ステント\", class=\"I\", year=\"all\".",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "description": "Japanese words: product, generic name, company or remark; all words must match. Optional."
+        },
+        "class": {
+          "type": "string",
+          "description": "Recall class: I, II or III. Default: all three."
+        },
+        "product_type": {
+          "type": "string",
+          "description": "One of 医薬品, 医薬部外品, 化粧品, 体外診断用医薬品, 医療機器, 再生医療等製品 (or drug, quasi-drug, cosmetic, ivd, device, regenerative)."
+        },
+        "year": {
+          "type": "string",
+          "description": "Fiscal year (April to March) such as \"2025\", \"recent\" (default: the current fiscal year) or \"all\" (from fiscal 2024)."
+        },
+        "date_from": {
+          "type": "string",
+          "description": "Only notices posted on or after this ISO date (YYYY-MM-DD)."
+        },
+        "date_to": {
+          "type": "string",
+          "description": "Only notices posted on or before this ISO date (YYYY-MM-DD)."
+        },
+        "limit": {
+          "type": "number",
+          "description": "Maximum notices returned (1-50, default 10); total_matches gives the full count."
+        }
+      }
+    }
+  },
+  {
+    "name": "jp_pmda_recall_get",
+    "description": "Get one Japanese drug or medical-device recall notice by its recall number (such as 1-2464, as returned by jp_pmda_recalls_search) from the Pharmaceuticals and Medical Devices Agency (PMDA): class, generic and product name, the marketing authorisation holder, affected lots, quantity and shipping period, the reason for the recall as the company states it, the health damage feared, the recall start date, the intended use and the company's notes. An unknown number returns found:false. The notice's contact person and the company's addresses are not returned. Example: recall_number=\"1-2464\".",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "recall_number": {
+          "type": "string",
+          "description": "Recall number, a class digit (1, 2 or 3), a hyphen and the serial, e.g. \"1-2464\"."
+        }
+      },
+      "required": [
+        "recall_number"
+      ]
+    }
+  }
+]
